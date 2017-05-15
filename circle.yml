@@ -6,13 +6,13 @@ machine:
 
 test:
   override:
-    - docker build -t codacy/teamcity-agent:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM --no-cache .
+    - docker build -t codacy/$CIRCLE_PROJECT_REPONAME:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM --no-cache .
 
 deployment:
   hub:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker tag -f codacy/teamcity-agent:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM codacy/teamcity-agent:latest
-      - docker push codacy/teamcity-agent:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM
-      - docker push codacy/teamcity-agent:latest
+      - docker tag -f codacy/$CIRCLE_PROJECT_REPONAME:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM codacy/$CIRCLE_PROJECT_REPONAME:latest
+      - docker push codacy/$CIRCLE_PROJECT_REPONAME:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM
+      - docker push codacy/$CIRCLE_PROJECT_REPONAME:latest
