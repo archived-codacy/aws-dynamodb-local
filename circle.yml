@@ -1,0 +1,18 @@
+machine:
+  java:
+    version: oraclejdk8
+  services:
+    - docker
+
+test:
+  override:
+    - docker build -t codacy/teamcity-agent:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM --no-cache .
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker tag -f codacy/teamcity-agent:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM codacy/teamcity-agent:latest
+      - docker push codacy/teamcity-agent:$DOCKER_VERSION_PREFIX.$CIRCLE_BUILD_NUM
+      - docker push codacy/teamcity-agent:latest
